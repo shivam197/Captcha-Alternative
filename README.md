@@ -3,13 +3,13 @@ MNIST dataset trained using CNN in tensorflow
 
 The dataset of this project has been downloaded from keras dataset. Then it is trained using convolutional neural network in tensorflow. 
 
-#Dependencies
+# Dependencies
 A system with 'anaconda' and 'jupyter notebook' installed is required.
 
-###Python packages required
+### Python packages required
 All the required packages can be found in requirements.txt
 
-####Installation
+#### Installation
 'git clone https://github.com/shivam197/MNIST-Tensorflow.git'
 'cd MNIST_Tensorflow'
 'pip install -r requirements.txt'
@@ -23,7 +23,7 @@ This project includes :
 
 **3. Flask web application** : Flask web application uses html canvas along with javascript in frontend for drawing digits and bootstrap for styling. It saves the figure drawn on html canvas as Untitled.png and uses saved tensorflow model to make predictions.
 
-####Running app in development mode
+#### Running app in development mode
 In the project directory, run the following command in conda-prompt:
 'python app.py'
 
