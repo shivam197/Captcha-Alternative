@@ -10,9 +10,11 @@ A system with `anaconda` and `jupyter notebook` installed is required.
 All the required packages can be found in requirements.txt
 
 #### Installation
-`git clone https://github.com/shivam197/MNIST-Tensorflow.git`
-`cd MNIST_Tensorflow`
-`pip install -r requirements.txt`
+```shell
+git clone https://github.com/shivam197/MNIST-Tensorflow.git
+cd MNIST_Tensorflow
+pip install -r requirements.txt
+```
 
 
 This project includes :
