@@ -4,15 +4,15 @@ MNIST dataset trained using CNN in tensorflow
 The dataset of this project has been downloaded from keras dataset. Then it is trained using convolutional neural network in tensorflow. 
 
 # Dependencies
-A system with 'anaconda' and 'jupyter notebook' installed is required.
+A system with `anaconda` and `jupyter notebook` installed is required.
 
 ### Python packages required
 All the required packages can be found in requirements.txt
 
 #### Installation
-'git clone https://github.com/shivam197/MNIST-Tensorflow.git'
-'cd MNIST_Tensorflow'
-'pip install -r requirements.txt'
+`git clone https://github.com/shivam197/MNIST-Tensorflow.git`
+`cd MNIST_Tensorflow`
+`pip install -r requirements.txt`
 
 
 This project includes :
@@ -25,7 +25,7 @@ This project includes :
 
 #### Running app in development mode
 In the project directory, run the following command in conda-prompt:
-'python app.py'
+`python app.py`
 
 Open [http://localhost:5000](http://localhost:5000).
 
