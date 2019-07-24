@@ -33,4 +33,5 @@ In the project directory, run the following command in conda-prompt:
 
 Open [http://localhost:5000](http://localhost:5000).
 
-![Webpage_ss](https://user-images.githubusercontent.com/51543033/61583730-aa5a6280-ab59-11e9-8370-b5503a2a4b1b.png)
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/51543033/61825551-38965780-ae7e-11e9-8d28-58d56667ab1a.gif)
+
