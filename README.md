@@ -35,3 +35,6 @@ Open [http://localhost:5000](http://localhost:5000).
 
 ![ezgif com-video-to-gif](https://user-images.githubusercontent.com/51543033/61825551-38965780-ae7e-11e9-8d28-58d56667ab1a.gif)
 
+This web app deployed on heroku is available at : 
+
+https://fathomless-shore-48898.herokuapp.com
