@@ -8,7 +8,7 @@ import tensorflow as tf
 from PIL import Image
 
 app = Flask(__name__)
-
+app.config['UPLOADED_PHOTOS_DEST'] = '/Upload'
 
 sess= tf.Session()
 saver= tf.train.import_meta_graph('Model/saved_model.meta')
@@ -25,13 +25,13 @@ def ImageConversion(raw_image):
 	raw_image = raw_image.decode('utf-8')
 	img_string = re.search(r'base64,(.*)',raw_image).group(1)
 	img_string = bytes(img_string,'utf-8')
-	with open('Untitled.png','wb') as output:
+	with open('Upload/Untitled.png','wb') as output:
 		output.write(base64.decodestring(img_string))
 
 
 def ImagePreprocessing():
 
-	image = Image.open('Untitled.png').convert('RGB').convert('L')
+	image = Image.open('Upload/Untitled.png').convert('RGB').convert('L')
 	image = image.resize((75,75))
 	arr = np.array(image)
 
