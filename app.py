@@ -1,9 +1,9 @@
-
 from flask import Flask, render_template,request
 import numpy as np
 import re
 import base64
 import os
+import pandas as pd
 import tensorflow as tf
 from PIL import Image
 
@@ -20,17 +20,17 @@ x= graph.get_tensor_by_name("Input:0")
 prediction = graph.get_tensor_by_name("Prediction:0")
 prediction = (tf.nn.softmax(prediction))
 
-def ImageConversion(raw_image):
+df = pd.read_csv("Database/Questions.csv")
+id = -1
 
+def ImageConversion(raw_image):
 	raw_image = raw_image.decode('utf-8')
 	img_string = re.search(r'base64,(.*)',raw_image).group(1)
 	img_string = bytes(img_string,'utf-8')
 	with open('Upload/Untitled.png','wb') as output:
 		output.write(base64.decodestring(img_string))
 
-
 def ImagePreprocessing():
-
 	image = Image.open('Upload/Untitled.png').convert('RGB').convert('L')
 	image = image.resize((75,75))
 	arr = np.array(image)
@@ -77,7 +77,10 @@ def ImagePreprocessing():
 	return arr
 @app.route('/')
 def index():
-	return render_template("index.html")
+	global id
+	id = np.random.randint(len(df)-1)
+	que = df["Question"][id]
+	return render_template("index.html",question = que)
 
 @app.route('/predict/',methods=['GET','POST'])
 def predict():
@@ -89,10 +92,11 @@ def predict():
 
 	pred = (sess.run(prediction,{x:image_arr}))
 	index = np.argmax(pred)
+	if index == df["Answer"][id]:
+		return "{}".format("Successful!")
+	else:
+		return "{}".format("Failed!")
 
-
-	S = str(index) +"  Probability : " + str(pred[0][index])
-	return '{}'.format(S)
 
 if __name__ == "__main__":
 	app.run()
