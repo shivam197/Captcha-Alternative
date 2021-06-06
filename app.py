@@ -116,7 +116,7 @@ def predict():
     else:
         expected = lettersDf["Answer"][questionNo]
 
-
+    print("Expected = " + expected + "\nResponse = " + response)
     if response == expected:
         return "{}".format("Successful!")
     else:
