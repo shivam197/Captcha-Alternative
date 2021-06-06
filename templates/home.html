@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="global">
+        <div class="jumbotron">
+            <h1 class="display-4">Sample Form</h1>
+            <p class="lead">Fill the following details.</p>
+            <hr class="my-4">
+        </div>
+
+        <form action="{{url_for('captcha')}}" method="post" style="margin-left:3%; width:70%;">
+            <div class="form-group">
+                <label>First name</label>
+                <input type="text" class="form-control" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label>Last name</label>
+                <input type="text" class="form-control" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Choose Captcha verification process</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="captchaProcess">
+                    <option value="ocr">OCR Captcha</option>
+                    <option value="checkboard">Checkboard Captcha</option>
+                </select>
+            </div>
+
+            <input type="submit" class="btn btn-success" id="submitButton" style=" font-weight: 400; font-family: 'Open Sans', Helvetica;">
+
+        </form>
+        <br>
+    </div>
+
+</body>
+
+</html>

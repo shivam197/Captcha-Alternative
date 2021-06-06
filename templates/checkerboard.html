@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="global">
+        <center>
+            <div style="margin-left:3%">
+                <h3>Captcha Verification : </h3>
+                <h7>Click all BLACK squares until the grid is all white.</h4>
+                    <hr>
+            </div>
+            <table border="2" width=280px height=280px style="cursor:crosshair">
+                <tbody>
+                    <tr>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+
+                    </tr>
+                    <tr>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+
+                    </tr>
+                    <tr>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                        <td bgcolor="white" class="cell"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <br>
+                <input type="button" id="submitButton" value="Submit" class="btn btn-primary">
+                <br />
+                <!-- <a href="#" class="myButton"><span class="btn btn-success"
+						style=" font-weight: 400; font-family: 'Open Sans', Helvetica;"> Submit </span></a> -->
+            </div>
+        </center>
+    </div>
+
+    <h3 id="result" style="font-family:  'Lucida Sans Unicode'; margin-left:4%; margin-top: 5%">
+    </h3>
+    <br>
+    <div id="result2" style="font-family:  'Lucida Sans Unicode'; margin-left:4%; margin-top: 2%">
+        <span>
+		<br>
+	  </span>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <script src="{{url_for('static', filename='index.js')}}"></script>
+
+</body>
+
+<script>
+    //Randomly fill Black colour in cells
+    var cells = document.getElementsByClassName("cell");
+    var n = Math.floor(Math.random() * (8 - 4 + 1) + 4)
+    for (let i = 0; i < n; i++) {
+        var randomIndex = Math.floor(Math.random() * (15 - 0 + 1) + 0)
+        cells[randomIndex].setAttribute("bgcolor", "black");
+    }
+
+    //Toggle Color on click
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].addEventListener("click", function() {
+            if (this.getAttribute("bgcolor") == "white") this.setAttribute("bgcolor", "black");
+            else if (this.getAttribute("bgcolor") == "black") this.setAttribute("bgcolor", "white");
+        });
+    }
+
+
+    // Set up the SUBMIT BUTTON
+    var submitBtn = $("#submitButton");
+    submitBtn.on("click", function() {
+        var flag = 0;
+        for (let i = 0; i < cells.length; i++) {
+            if (cells[i].getAttribute("bgcolor") == "black") {
+                flag = 1;
+                break;
+            }
+        }
+        if (flag == 1)
+            alert("Captcha verification FAILED. Form not Submitted.")
+        else {
+
+            $("#global").empty();
+            $("#result").text("CAPTCHA verification : Successful!");
+            var link = $("<a>");
+            link.attr("href", "/");
+            link.attr("title", "Home");
+            link.text("Go to form page.");
+            link.addClass("link");
+
+            $("#result2").html(link);
+
+            $("#hiddenButton").show();
+        }
+
+    });
+</script>
+
+</html>
