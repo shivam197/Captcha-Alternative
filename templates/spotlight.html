@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Form</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<style>
+		html {
+			height: 100%;
+		}
+
+		body {
+			padding: 0;
+			margin: 0;
+			margin-left: 10px;
+		}
+
+		.captchaBox {
+			width: 320px;
+			height: 160px;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.canvas {
+			position: absolute;
+			width: 320px;
+			height: 160px;
+			background: white no-repeat left top;
+			background-size: cover;
+			border: red 3px;
+		}
+
+		.searchlight {
+			position: absolute;
+			z-index: 10;
+			height: 100px;
+			width: 100px;
+			border-width: 100vh 100vh;
+			border-style: solid;
+			border-color: #000;
+			top: -100vh;
+			left: -100vh;
+			cursor: none;
+			background: #000;
+			-moz-box-sizing: content-box;
+			-webkit-box-sizing: content-box;
+			-ms-box-sizing: content-box;
+			box-sizing: content-box;
+			overflow: hidden;
+		}
+
+		.searchlight.on {
+			background: -moz-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 1) 100%);
+			/* FF3.6+ */
+			background: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 1) 100%);
+			/* Chrome10+,Safari5.1+ */
+			background: -o-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 1) 100%);
+			/* Opera 12+ */
+			background: -ms-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 1) 100%);
+			/* IE10+ */
+			background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 1) 100%);
+			/* W3C*/
+		}
+	</style>
+</head>
+
+<body>
+	<div id="global">
+		<center>
+			<h3>Captcha Verification : </h3>
+			<h7>Hover mouse/pointer over the area to reveal it.</h7>
+			<hr>
+			<div class="captchaBox">
+				<div class="canvas"></div>
+				<div class="searchlight"></div>
+			</div>
+			<hr>
+			<h7>Type the code below:</h7> <br>
+			<input type="text" id="code" value="" class=" btn-primary">
+			<input type="button" id="submitButton" value="Submit" class="btn btn-primary">
+		</center>
+	</div>
+
+	<div id="captchaSolved" style="visibility: hidden">
+		<center>
+		<h3 id="result" style="font-family:  'Lucida Sans Unicode'; margin-top: 5%">
+			Captcha Solved!
+		</h3>
+		<br>
+		<a class="btn btn-primary" href="/" role="button">Go to home</a>
+		</center>
+	</div>
+
+</body>
+
+<script>
+	//Script for printing random captcha code into canvas
+	var text
+	window.onload = function () {
+		var canvas = document.createElement("canvas");
+		// canvas.width = 200;
+		// canvas.height = 100;
+		var ctx = canvas.getContext('2d');
+		ctx.font = "50px Arial";
+		// var text = $("#the_text").text();
+		var minm = 10000;
+		var maxm = 99999;
+		text = Math.floor(Math.random() * (maxm - minm + 1)) + minm;
+		ctx.fillText(text, 50, 80, 250);
+		// var img = document.createElement("img");
+		// img.src = canvas.toDataURL();
+		document.getElementsByClassName("canvas")[0].style.background = `url(${canvas.toDataURL()}) no-repeat left top`
+	}
+
+	// Set up the SUBMIT BUTTON
+	var submitBtn = $("#submitButton");
+	submitBtn.on("click", function () {
+		if ($("#code").val() == text) {
+          $("#global").empty();
+          $("#captchaSolved").css("visibility", "visible");
+		}
+		else {
+			alert("Captcha verification FAILED. Form not Submitted.")
+			document.location.reload(true)
+		}
+	});
+</script>
+
+<script>
+	//Script for Spotlight effect on mouse hover
+	let extraLeft = document.getElementsByClassName("captchaBox")[0].offsetLeft
+	let extraTop = document.getElementsByClassName("captchaBox")[0].offsetTop
+	$('.searchlight')
+		.on('mousemove', function (event) {
+			$(this).addClass('on').css({ 'margin-left': event.pageX - 50 - extraLeft, 'margin-top': event.pageY - 50 - extraTop });
+		})
+		.on('mouseout', function (event) {
+			$(this).removeClass('on');
+		})
+		// .on('click', function () {
+		// 	$(this).fadeOut(function () {
+		// 		$(this).remove();
+		// 	});
+		// });
+
+</script>
+
+</html>

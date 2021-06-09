@@ -88,15 +88,22 @@ def captcha():
         if questionSet == 0:
             questionNo = np.random.randint(len(digitDf)-1)
             question = digitDf["Question"][questionNo]
+            additionalMessage = ""
         else:
             questionNo = np.random.randint(len(lettersDf)-1)
             question = lettersDf["Question"][questionNo]
+            additionalMessage = "Note: Draw uppercase letter only!"
 
-        return render_template("index.html", question=question)
-    
+        return render_template("ocr.html", question=question, message = additionalMessage)
+
     elif captchaType == "checkboard":
         return render_template("checkerboard.html")
 
+    elif captchaType == "spotlight":
+        return render_template("spotlight.html")
+
+    elif captchaType == "sliding":
+        return render_template("sliding.html")
 
 @app.route('/predict/', methods=['GET', 'POST'])
 def predict():
