@@ -26,9 +26,9 @@
       <br>
       <h4>{{question}}</h4>
       <br>
+      <label>{{message}}</label>
       <hr>
-      <span style="color: #4DAF7C; font-weight: 400; font-family: 'Open Sans', Helvetica;	">Draw your answer inside this
-        Box!</span>
+      <span style="color: #4DAF7C; font-weight: 400; font-family: 'Open Sans', Helvetica;	">Draw your answer inside this Box!</span>
       <br>
       <br>
     </div>
@@ -48,42 +48,45 @@
 
   </div>
 
-  <h3 id="result" style="font-family:  'Lucida Sans Unicode'; margin-left:4%; margin-top: 5%">
-  </h3>
-  <br>
-  <div id="result2" style="font-family:  'Lucida Sans Unicode'; margin-left:4%; margin-top: 2%">
-    <span>
-      <br>
-    </span>
+  <div id="captchaResult" style="visibility: hidden">
+    <center>
+    <h3 id="result" style="font-family:  'Lucida Sans Unicode'; margin-top: 5%">  </h3>
+    <br>
+    <a class="btn btn-primary" href="/" role="button">Go to home</a>
+    </center>
   </div>
+
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
   <script src="{{url_for('static', filename='index.js')}}"></script>
 
   <script type="text/javascript">
     $(".myButton").click(function () {
-      var $SCRIPT_ROOT = {{ request.script_root| tojson | safe
-    }};
-    var canvasObj = document.getElementById("canvas");
-    var img = canvasObj.toDataURL();
-    // console.log(img)
-    $.ajax({
-      type: "POST",
-      url: $SCRIPT_ROOT + "/predict/",
-      data: img,
-      success: function (data) {
-        $("#global").empty();
-        $("#result").text("CAPTCHA verification : " + data);
-        var link = $("<a>");
-        link.attr("href", "/");
-        link.attr("title", "Home");
-        link.text("Go to form page.");
-        link.addClass("link");
+      var $SCRIPT_ROOT = {{ request.script_root| tojson | safe }};
+      var canvasObj = document.getElementById("canvas");
+      var img = canvasObj.toDataURL();
+      // console.log(img)
+      var arr = {Image: img, QuestionSet: '{{questionSet}}', QuestionNo: '{{questionNo}}'};
+      $.ajax({
+        type: "POST",
+        url: $SCRIPT_ROOT + "/predict/",
+        dataType: 'json',
+        data: JSON.stringify(arr),
+        contentType: 'application/json; charset=utf-8',
 
-        $("#result2").html(link);
+        success: function (data) {
+          $("#global").empty();
+          $("#result").text("CAPTCHA verification : " + data.responseText);
+          $("#captchaResult").css("visibility", "visible");
 
-        $("#hiddenButton").show();
-      }
+        },
+
+        error: function (data) {
+          console.log("Inside error" + JSON.stringify(data));
+          $("#global").empty();
+          $("#result").text("CAPTCHA verification : " + data.responseText);
+          $("#captchaResult").css("visibility", "visible");
+        }
     });
 	   		});
   </script>

@@ -8,7 +8,8 @@ import pandas as pd
 import tensorflow as tf
 from PIL import Image
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="./static/", template_folder="./templates")
+
 app.config['UPLOADED_PHOTOS_DEST'] = '/Upload'
 
 a = ModelA()
@@ -16,12 +17,8 @@ b = ModelB()
 
 digitDf = pd.read_csv("Database/DigitQuestions.csv")
 lettersDf = pd.read_csv("Database/LetterQuestions.csv")
-questionNo = -1
-questionSet = -1
-
 
 def ImageConversion(raw_image):
-    raw_image = raw_image.decode('utf-8')
     img_string = re.search(r'base64,(.*)', raw_image).group(1)
     img_string = bytes(img_string, 'utf-8')
     with open('Upload/Untitled.png', 'wb') as output:
@@ -83,24 +80,38 @@ def index():
 def captcha():
     captchaType = request.form.get("captchaProcess")
     if captchaType == "ocr":
-        global questionNo, questionSet
+        questionNo = -1
+        questionSet = -1
         questionSet = np.random.randint(2)
         if questionSet == 0:
             questionNo = np.random.randint(len(digitDf)-1)
             question = digitDf["Question"][questionNo]
+            additionalMessage = ""
         else:
             questionNo = np.random.randint(len(lettersDf)-1)
             question = lettersDf["Question"][questionNo]
+            additionalMessage = "Note: Draw uppercase letter only!"
 
-        return render_template("index.html", question=question)
-    
+        return render_template("ocr.html", question=question, message = additionalMessage, questionSet = questionSet, questionNo = questionNo)
+
     elif captchaType == "checkboard":
         return render_template("checkerboard.html")
 
+    elif captchaType == "spotlight":
+        return render_template("spotlight.html")
+
+    elif captchaType == "sliding":
+        return render_template("sliding.html")
 
 @app.route('/predict/', methods=['GET', 'POST'])
 def predict():
-    raw_image = request.get_data()
+    reponseObtained = request.get_json()
+
+    raw_image = reponseObtained["Image"]
+
+    questionNo = int(reponseObtained["QuestionNo"])
+
+    questionSet = int(reponseObtained["QuestionSet"])
 
     ImageConversion(raw_image)
 
@@ -117,10 +128,16 @@ def predict():
         expected = lettersDf["Answer"][questionNo]
 
     print("Expected = " + str(expected) + "\nResponse = " + str(response))
+    print("Question Set = " + str(questionSet) + "\nQuestion No = " + str(questionNo))
     if response == expected:
+        message = "Captcha verification Successful. Form Submitted."
         return "{}".format("Successful!")
     else:
+        message = "Captcha verification FAILED. Form not Submitted."
         return "{}".format("Failed!")
+
+    print("Return render template end page")
+    return render_template("endPage.html", message = message)
 
 
 if __name__ == "__main__":
