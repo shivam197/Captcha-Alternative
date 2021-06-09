@@ -50,8 +50,7 @@
 
   <div id="captchaResult" style="visibility: hidden">
     <center>
-    <h3 id="result" style="font-family:  'Lucida Sans Unicode'; margin-top: 5%">
-    </h3>
+    <h3 id="result" style="font-family:  'Lucida Sans Unicode'; margin-top: 5%">  </h3>
     <br>
     <a class="btn btn-primary" href="/" role="button">Go to home</a>
     </center>
@@ -63,22 +62,31 @@
 
   <script type="text/javascript">
     $(".myButton").click(function () {
-      var $SCRIPT_ROOT = {{ request.script_root| tojson | safe
-    }};
-    var canvasObj = document.getElementById("canvas");
-    var img = canvasObj.toDataURL();
-    // console.log(img)
-    $.ajax({
-      type: "POST",
-      url: $SCRIPT_ROOT + "/predict/",
-      data: img,
-      success: function (data) {
+      var $SCRIPT_ROOT = {{ request.script_root| tojson | safe }};
+      var canvasObj = document.getElementById("canvas");
+      var img = canvasObj.toDataURL();
+      // console.log(img)
+      var arr = {Image: img, QuestionSet: '{{questionSet}}', QuestionNo: '{{questionNo}}'};
+      $.ajax({
+        type: "POST",
+        url: $SCRIPT_ROOT + "/predict/",
+        dataType: 'json',
+        data: JSON.stringify(arr),
+        contentType: 'application/json; charset=utf-8',
 
-        $("#global").empty();
-        $("#result").text("CAPTCHA verification : " + data);
-        $("#captchaResult").css("visibility", "visible");
+        success: function (data) {
+          $("#global").empty();
+          $("#result").text("CAPTCHA verification : " + data.responseText);
+          $("#captchaResult").css("visibility", "visible");
 
-      }
+        },
+
+        error: function (data) {
+          console.log("Inside error" + JSON.stringify(data));
+          $("#global").empty();
+          $("#result").text("CAPTCHA verification : " + data.responseText);
+          $("#captchaResult").css("visibility", "visible");
+        }
     });
 	   		});
   </script>
